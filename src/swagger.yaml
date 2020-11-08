@@ -1,0 +1,129 @@
+openapi: "3.0.0"
+info:
+  description: "This is a simple app about task and user"
+  version: "1.0.0"
+  title: "Implement swagger"
+  termsOfService: "Swagger Petstore"
+  contact:
+    email: "xuanhoang30071999@gmail.com"
+tags:
+  - name: "user"
+    description: "Everything about user"
+  - name: "task"
+    description: "Everything about task"
+  - name: "authentication"
+    description: "About authentication"
+paths:
+  /create-user:
+    post:
+      tags:
+        - "user"
+      summary: "Create new user"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      requestBody:
+        description: "User object need to be added to the database"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/User"
+      responses:
+        "405":
+          description: "Invalid input"
+        "201":
+          description: "Crete new user successfully"
+  /auth/login:
+    post:
+      tags:
+        - "authentication"
+      summary: "Login user"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      requestBody:
+        description: "Email and password of user"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/bodyLoginUser"
+      responses:
+        "200":
+          description: "Login successfully"
+  /create-task:
+    post:
+      tags:
+        - "task"
+      summary: "Create task"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      requestBody:
+        description: "Email and password of user"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                description:
+                  type: string
+                  example: Test swagger
+                completed:
+                  type: boolean
+                  example: false
+      responses:
+        "200":
+          description: "create task successfully"
+        "401":
+          description: "Unauthorize"
+      security:
+        - BearerAuth: []
+
+definitions:
+  User:
+    type: "object"
+    required:
+      - name
+      - password
+    properties:
+      name:
+        type: "string"
+        example: "hoangnx30"
+      email:
+        type: "string"
+        example: "xuanhoang30071999@gmail.com"
+      password:
+        type: "string"
+        example: "asdasdasd"
+      age:
+        type: "number"
+        example: 12
+        format: "int64"
+  bodyLoginUser:
+    type: "object"
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: "string"
+        example: "xuanhoang30071999@gmail.com"
+      password:
+        type: "string"
+        format: "password"
+        example: "asdasdasd"
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
